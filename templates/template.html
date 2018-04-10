@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>自如租房信息</title>
+</head>
+<body>
+
+<div id="content">
+    {% for item in new_room_info %}
+    <div style="padding: 80px 10px;display: flex;flex-direction: column;align-items: center;justify-content: flex-start;flex-wrap: wrap;border-bottom-color: grey;border-bottom-style: solid;border-bottom-width: 1px;">
+        <h2><a href="{{item['url']}}">{{item['title']}}</a></h2>
+        <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;flex-wrap: wrap;">
+            {% for img in item['imgs'] %}
+          <a style="width: {{item['img_width']}}%;padding:10px" href="{{img}}">  <img style="width: 100%;" src="{{img}}"> </a>
+            {% endfor %}
+        </div>
+        <div class="deatail_info">
+          <ul>
+              <li>价格: {{item['price']}}</li>
+              <li>面积: {{item['area']}}</li>
+              <li>步行距离: {{item['distance']}}米</li>
+              <li>时间: {{item['duration']}}秒</li>
+          </ul>
+            <p>描述：{{item['description']}}</p>
+            <p>交通：{{item['traffic']}}</p>
+            <ul>
+                {% for config in item['configuration'] %}
+                <li style="color: gray;list-style: none; float: left;padding: 10px;">{{config}}</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+</body>
+</html>

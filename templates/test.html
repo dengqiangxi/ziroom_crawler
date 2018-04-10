@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>自如租房信息</title>
+</head>
+<body>
+<div id="content">
+    <div class="item">
+        <div class="banner" style="width: {{item['p']}}%;height: 300px">
+            {% for img in item['imgs'] %}
+            <img src="{{img}}">
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+# -*- coding=utf8 -*-
+# Created by dengqiangxi at 2018/4/9
+
+mail_config = {
+    'smtpserver': 'smtp.hichina.com',  # 服务server,改成自己的
+    'smtpport': 465,  # 发送邮件端口
+    'password': '******',  # 邮件密码
+    'sender': 'xxxx@xxxxxxx.com',  # 发送者
+    'receiver': 'xxxx@xxxxxxx.com',  # 接受者  发送者和接受者可以是同一个邮箱
+}
+config = {
+    'key': '9fa6ee8aa0f37c4820306c171850ff06',  # 高德地图key
+    'url': 'http://www.ziroom.com/z/nl/z2-s14%E5%8F%B7%E7%BA%BF-t%E6%9C%9B%E4%BA%AC.html',  # 房源url
+    'latlng': '116.487187,40.002045',  # 望京SOHO 经纬度
+    # 'toward':'南',   # 可选 房间朝向
+    "max_price": 3100,  # 必选 最高价格 土豪自己改代码
+    "max_distance": 2000,  # 可选 最大步行距离 单位：米
+    "max_time": 60 * 20  # 可选 最长步行时间 单位：秒
+}
