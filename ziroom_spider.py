@@ -6,7 +6,6 @@ from path_calculate import calculate_path
 from configurations import config
 import re
 from time import sleep
-import json
 from jinja2 import Template
 
 from mail_utils import sendmail
@@ -88,8 +87,9 @@ def parse_page_detail(page_detail_info):
         if path:
             page_detail_info['distance'] = path['distance']
             page_detail_info['duration'] = path['duration']
-            if 'max_distance' in config and 'max_time' in config and int(path['distance']) > config[
-                'max_distance'] and int(path['duration']) > config['max_time']:
+            if 'max_distance' in config and int(path['distance']) > config['max_distance']:
+                return
+            if 'max_time' in config and int(path['duration']) > config['max_time']:
                 return
 
     page_detail_info['location'] = location
@@ -187,7 +187,7 @@ def analyze_and_send_mail():
         with open("./templates/template.html", "r") as fd:
             template = Template(fd.read())
             res = template.render(new_room_info=new_room_info)  # 渲染
-            sendmail("自如找到了新的房源", res)
+            sendmail("自如找到了{}个房源".format(len(new_room_info)), res)
 
 
 if __name__ == '__main__':
