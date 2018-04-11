@@ -179,11 +179,11 @@ def parse_page_detail(page_detail_info):
 def analyze_and_send_mail():
     global current_favor_rooms
     room_numbers = [x['room_number'] for x in suitable_info]
-    current_favor_rooms = open("./misc/current_favor_rooms", "a+")
-    current_favor_rooms.write('\n' + '\n'.join(room_numbers))
-    current_favor_rooms.close()
     new_room_info = [x for x in suitable_info if x['room_number'] in room_numbers]
     if new_room_info:
+        current_favor_rooms = open("./misc/current_favor_rooms", "a+")
+        current_favor_rooms.write('\n' + '\n'.join(room_numbers))
+        current_favor_rooms.close()
         with open("./templates/template.html", "r") as fd:
             template = Template(fd.read())
             res = template.render(new_room_info=new_room_info)  # 渲染
