@@ -33,7 +33,9 @@ crontab 配置如下：
 时间间隔可自行调整
 
 ### 效果如下
-![ddd](art/pic01.png)
+![ddd](art/mobile_pic_01.jpg)
 
-![ddd](art/pic02.png)
+![ddd](art/mobile_pic_02.jpg)
+
+![ddd](art/mobile_pic_03.jpg)
 
