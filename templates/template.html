@@ -30,6 +30,23 @@
             </ul>
 
         </div>
+          <div style="width:100%;">
+                <p >室友相关: </p>
+                {% for roommate in item['roommates'] %}
+              <div style="width: 100%">
+                    <ul>
+                        <li>房间编号：{{roommate['room_location']}}</li>
+                        <li>状态：{{roommate['room_state']}}</li>
+                        <li>星座：{{roommate['sign']}}</li>
+                        {% if 'room_job' in roommate %}
+                        <li >职业： {{roommate['room_job']}}</li>
+                        {% endif %}
+                        <li>入住时间： {{roommate['room_time_interval']}}</li>
+                    </ul>
+                </div>
+              {% endfor%}
+
+            </div>
     </div>
     {% endfor %}
 

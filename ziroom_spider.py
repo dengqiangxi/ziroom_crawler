@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding=utf8 -*-
 # Created by dengqiangxi at 2018/4/8
+
 from requests_html import HTMLSession
 from path_calculate import calculate_path
 from configurations import config
@@ -9,16 +10,6 @@ from time import sleep
 from jinja2 import Template
 
 from mail_utils import sendmail
-
-number_re = re.compile("(\d+)")
-
-start_url = config['url']
-session = HTMLSession()
-
-current_favor_rooms = open("./misc/current_favor_rooms", "r+")
-
-file_room_number = set([x for x in current_favor_rooms.read().split("\n") if x])
-print(file_room_number)
 
 
 def get_page_info(url):
@@ -54,14 +45,14 @@ def parse_page_summary(url):
         info['price'] = int(price)
         info['area'] = float(number_re.findall(detail[0])[0])
         if info['area'] > 10 and config['max_price'] > info['price'] > 500:
-            sleep(1)
+            sleep(.5)
             parse_page_detail(info)
 
     next_pages = html.xpath('//div[@class="pages"]/a[@class="next"]/@href')
     if len(next_pages) > 0:
         next_page_url = 'http:' + next_pages[0]
         print(next_page_url)
-        sleep(1)
+        sleep(.5)
         parse_page_summary(next_page_url)
 
 
@@ -88,8 +79,10 @@ def parse_page_detail(page_detail_info):
             page_detail_info['distance'] = path['distance']
             page_detail_info['duration'] = path['duration']
             if 'max_distance' in config and int(path['distance']) > config['max_distance']:
+                print(page_detail_info['room_number'], "距离不符合")
                 return
             if 'max_time' in config and int(path['duration']) > config['max_time']:
+                print(page_detail_info['room_number'], "时间不符合")
                 return
 
     page_detail_info['location'] = location
@@ -130,8 +123,8 @@ def parse_page_detail(page_detail_info):
         sign = ''.join(i.xpath('//li//div[@class="user_center"]/p[@class="sign"]/text()'))
         roommate['sign'] = sign
         room_time_interval = ''.join(i.xpath('//li//div[contains(@class,"user_bottom")]/p/text()')).replace(" ", '')
-        roommate['room_state'] = room_location
-        roommate['room_location'] = room_state
+        roommate['room_location'] = room_location
+        roommate['room_state'] = room_state
         if room_job != '…' and room_job != '...':
             roommate['room_job'] = room_job
         roommate['room_time_interval'] = room_time_interval
@@ -166,6 +159,10 @@ def parse_page_detail(page_detail_info):
     if "朝向" in detail_info.keys():
         toward = detail_info['朝向']
         if 'toward' in config and toward != config['toward']:
+            print(page_detail_info['room_number'], "朝向不符合")
+            return
+        if 'not_towards' in config and toward in config['not_towards']:
+            print(page_detail_info['room_number'], "朝向不符合")
             return
         page_detail_info['toward'] = toward
     if "户型" in detail_info.keys():
@@ -182,7 +179,8 @@ def analyze_and_send_mail():
     new_room_info = [x for x in suitable_info if x['room_number'] in room_numbers]
     if new_room_info:
         current_favor_rooms = open("./misc/current_favor_rooms", "a+")
-        current_favor_rooms.write('\n' + '\n'.join(room_numbers))
+        str_new_info = '\n' + '\n'.join(room_numbers) if file_room_number else '\n'.join(room_numbers)
+        current_favor_rooms.write(str_new_info)
         current_favor_rooms.close()
         with open("./templates/template.html", "r") as fd:
             template = Template(fd.read())
@@ -191,6 +189,18 @@ def analyze_and_send_mail():
 
 
 if __name__ == '__main__':
+    # 只匹配数字
+    number_re = re.compile("(\d+)")
+
+    session = HTMLSession()
+
+    current_favor_rooms = open("./misc/current_favor_rooms", "r+")
+
+    file_room_number = set([x for x in current_favor_rooms.read().split("\n") if x])
+
     suitable_info = []
-    parse_page_summary(start_url)
+
+    start_urls = config['urls']
+    for url in start_urls:
+        parse_page_summary(url)
     analyze_and_send_mail()
