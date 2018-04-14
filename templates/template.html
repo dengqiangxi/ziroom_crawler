@@ -9,7 +9,7 @@
     {% for item in new_room_info %}
     <div style="padding: 80px 10px;display: flex;flex-direction: column;align-items: center;justify-content: flex-start;flex-wrap: wrap;border-bottom-color: grey;border-bottom-style: solid;border-bottom-width: 1px;">
         <h2><a href="{{item['url']}}">{{item['title']}}</a></h2>
-        <a href="http://m.ziroom.com/BJ/room/{{item['room_number']}}.html">手机版点这里</a>
+        <a href="http://m.ziroom.com/BJ/room/{{item['room_number']}}.html">手机版网站点这里(点开后点网站上边 打开APP 就可以跳转到APP了)</a>
         <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;flex-wrap: wrap;">
             {% for img in item['imgs'] %}
           <a style="width: {{item['img_width']}}%;padding:10px" href="{{img}}">  <img style="width: 100%;" src="{{img}}"> </a>
