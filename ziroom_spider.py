@@ -8,9 +8,9 @@ from configurations import config
 import re
 from time import sleep
 from jinja2 import Template
-
 from mail_utils import sendmail
 
+from fake_useragent import UserAgent
 
 def get_page_info(url):
     page = session.get(url=url, headers={
@@ -18,7 +18,7 @@ def get_page_info(url):
         "Accept-Encoding": "gzip, identity",
         "Cache-Control": "max-age=0",
         "Upgrade-Insecure-Requests": "1",
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36",
+        "User-Agent": ua.random,
         "Accept-Language": "zh-CN,zh;q=0.9,ja;q=0.8",
     })
     return page.html
@@ -39,7 +39,7 @@ def parse_page_summary(url):
         price = number_re.findall(price)[0]
         info['url'] = 'http:' + page_url
         room_number = number_re.findall(info['url'])[0]
-        if room_number in file_room_number:
+        if room_number in file_room_number or room_number in [item['room_number'] for item in suitable_info]:
             continue
         info['room_number'] = room_number
         info['price'] = int(price)
@@ -176,7 +176,7 @@ def parse_page_detail(page_detail_info):
 def analyze_and_send_mail():
     global current_favor_rooms
     room_numbers = [x['room_number'] for x in suitable_info]
-    new_room_info = set([x for x in suitable_info if x['room_number'] in room_numbers])
+    new_room_info = [x for x in suitable_info if x['room_number'] in room_numbers]
     if new_room_info:
         current_favor_rooms = open("./misc/current_favor_rooms", "a+")
         str_new_info = '\n' + '\n'.join(room_numbers) if file_room_number else '\n'.join(room_numbers)
@@ -189,6 +189,7 @@ def analyze_and_send_mail():
 
 
 if __name__ == '__main__':
+    ua = UserAgent()
     # 只匹配数字
     number_re = re.compile("(\d+)")
 

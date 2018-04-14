@@ -17,8 +17,10 @@ mail_config = {
     'receiver': 'xxxx@xxxxxxx.com',
 }
 config = {
-    # 高德地图key
-    'key': '9fa6ee8aa0f37c4820306c171850ff06',
+    # 高德地图key可以放入多个，可以从高德开发者平台创建多个key
+    'keys': [
+        ""
+    ],
     # 必选 房源url，可以多个
     'urls': [
         "http://www.ziroom.com/z/nl/z2-s14%E5%8F%B7%E7%BA%BF-t%E6%9C%9B%E4%BA%AC.html"

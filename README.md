@@ -8,7 +8,7 @@
  1. 将configurations.py.bak 重命名为 configurations.py
  2. 配置好configurations.py 邮件相关参数
  3. config中key是高德地图key，可以从开发者平台中获得 地址为[http://lbs.amap.com](http://lbs.amap.com)
-    服务平台选择web服务即可，按每半小时调用一次的话，一天大约几百次路径规划调用，完全到不了收费的次数限制。
+    服务平台选择web服务即可，按每半小时调用一次的话，一天大约几百次路径规划调用，完全到不了收费的次数限制。如果次数不够多，可以创建多个key
  4. 设置好相关配置项，代码中注释已经足够详细。自如房源url可以从浏览器打开我给的实例url，自行变更参数
  5. pip3 install -r requirements.txt
  6. 执行 ziroom_spider.py

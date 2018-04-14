@@ -3,16 +3,19 @@
 # Created by dengqiangxi at 2018/4/9
 import requests, json
 from configurations import config
+import random
 
 
 def calculate_path(lat, lng):
+    if "keys" not in config:
+        return
     try:
         response = requests.get(
             url="http://restapi.amap.com/v3/direction/walking",
             params={
                 "origin": "{},{}".format(lng, lat),
                 "destination": config['latlng'],
-                "key": config['key'],
+                "key": random.choice(config['keys'])
             },
         )
         if response.status_code == 200:
